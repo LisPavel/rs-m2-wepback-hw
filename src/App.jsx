@@ -2,28 +2,30 @@ import React, { useEffect, useRef, useState } from "react";
 import rainSound from "./assets/sounds/rain.mp3";
 import summerSound from "./assets/sounds/summer.mp3";
 import winterSound from "./assets/sounds/winter.mp3";
+import TrackButton from "./components/trackButton";
 
-const tracks = {
-  rain: rainSound,
-  summer: summerSound,
-  winter: winterSound,
-};
+const tracks = [
+  { name: "summer", track: summerSound },
+  { name: "rain", track: rainSound },
+  { name: "winter", track: winterSound },
+];
 
 export const App = () => {
-  const [trackName, setTrackName] = useState("summer");
-  const [currentTrack, setCurrentTrack] = useState(tracks[trackName]);
+  // const [trackName, setTrackName] = useState("summer");
+  const [trackIndex, setTrackIndex] = useState(0);
+  const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
 
   const audioRef = useRef();
 
-  const playTrack = (newTrackName) => {
-    if (newTrackName === trackName) {
+  const playTrack = (newTrack) => {
+    if (newTrack === trackIndex) {
       setIsPlaying((prev) => !prev);
     } else {
+      setTrackIndex(newTrack);
       setIsPlaying(true);
-      setTrackName(newTrackName);
-      setCurrentTrack(tracks[newTrackName]);
+      setCurrentTrack(tracks[newTrack]);
     }
   };
 
@@ -47,11 +49,16 @@ export const App = () => {
     <>
       <h1 className="text-xl ">Weather sounds</h1>
       <div className="btn-container">
-        <button className="summer" onClick={() => playTrack("summer")}></button>
-        <button className="rain" onClick={() => playTrack("rain")}></button>
-        <button className="winter" onClick={() => playTrack("winter")}></button>
+        {tracks.map((cfg, i) => (
+          <TrackButton
+            {...cfg}
+            trackIndex={i}
+            startPlaying={playTrack}
+            key={i}
+          />
+        ))}
       </div>
-      <audio src={currentTrack} ref={audioRef} />
+      <audio src={currentTrack?.track} ref={audioRef} />
       <input
         type="range"
         name="sound"
