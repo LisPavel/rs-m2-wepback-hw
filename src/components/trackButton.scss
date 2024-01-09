@@ -37,4 +37,9 @@
       background-image: url("@assets/icons/cloud-snow.svg");
     }
   }
+  &.playing {
+    &::after {
+      background-image: url("@assets/icons/pause.svg");
+    }
+  }
 }

@@ -54,6 +54,8 @@ export const App = () => {
             {...cfg}
             trackIndex={i}
             startPlaying={playTrack}
+            isPlaying={isPlaying}
+            currentTrack={currentTrack}
             key={i}
           />
         ))}
