@@ -13,6 +13,7 @@ export const App = () => {
   const [trackName, setTrackName] = useState("summer");
   const [currentTrack, setCurrentTrack] = useState(tracks[trackName]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(50);
 
   const audioRef = useRef();
 
@@ -27,13 +28,20 @@ export const App = () => {
   };
 
   useEffect(() => {
-    console.log(isPlaying);
     if (isPlaying) {
       audioRef.current.play();
     } else {
       audioRef.current.pause();
     }
   }, [isPlaying, audioRef, currentTrack]);
+
+  useEffect(() => {
+    audioRef.current.volume = volume / 100;
+  }, [volume, audioRef]);
+
+  const handleVolumeChange = (ev) => {
+    setVolume(ev.target.valueAsNumber);
+  };
 
   return (
     <>
@@ -44,7 +52,15 @@ export const App = () => {
         <button className="winter" onClick={() => playTrack("winter")}></button>
       </div>
       <audio src={currentTrack} ref={audioRef} />
-      <input type="range" name="sound" id="sound" min={0} max={100} />
+      <input
+        type="range"
+        name="sound"
+        id="sound"
+        min={0}
+        max={100}
+        value={volume}
+        onChange={handleVolumeChange}
+      />
     </>
   );
 };
