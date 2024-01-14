@@ -1,9 +1,10 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import TrackButton from "./trackButton";
+import { Track } from "../App";
 import "./player.scss";
 
 interface Props {
-  tracks: any[];
+  tracks: Track[];
 }
 
 const Player = ({ tracks }: Props) => {
