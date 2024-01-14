@@ -1,14 +1,22 @@
 import React from "react";
 import "./trackButton.scss";
 
+interface Props {
+  name: string;
+  startPlaying: (trackIndex: number) => void;
+  trackIndex: number;
+  isPlaying: boolean;
+  currentTrack: { name: string };
+}
+
 const TrackButton = ({
   name,
   startPlaying,
   trackIndex,
   isPlaying,
   currentTrack,
-}) => {
-  const classNames =
+}: Props) => {
+  const classNames: string =
     "track-button " +
     name +
     (isPlaying && currentTrack.name === name ? " playing" : "");
