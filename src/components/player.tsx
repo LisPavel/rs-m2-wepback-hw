@@ -1,28 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import TrackButton from "./trackButton";
+import { Track } from "../App";
 import "./player.scss";
 
-const Player = ({ tracks }) => {
+interface Props {
+  tracks: Track[];
+}
+
+const Player = ({ tracks }: Props) => {
   const [trackIndex, setTrackIndex] = useState(0);
   const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
 
-  const audioRef = useRef();
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (isPlaying) {
-      audioRef.current.play();
+      audioRef.current!.play();
     } else {
-      audioRef.current.pause();
+      audioRef.current!.pause();
     }
   }, [isPlaying, audioRef, currentTrack]);
 
   useEffect(() => {
-    audioRef.current.volume = volume / 100;
+    audioRef.current!.volume = volume / 100;
   }, [volume, audioRef]);
 
-  const playTrack = (newTrack) => {
+  const playTrack = (newTrack: number) => {
     if (newTrack === trackIndex) {
       setIsPlaying((prev) => !prev);
     } else {
@@ -32,9 +37,10 @@ const Player = ({ tracks }) => {
     }
   };
 
-  const handleVolumeChange = (ev) => {
-    setVolume(ev.target.valueAsNumber);
+  const handleVolumeChange = (ev: ChangeEvent<HTMLInputElement>): void => {
+    setVolume(ev.target!.valueAsNumber);
   };
+
   return (
     <div className={"player " + currentTrack.name}>
       <h1 className="text-xl ">Weather sounds</h1>
